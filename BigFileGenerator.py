@@ -1,10 +1,9 @@
 import time
-import threading
 import os
 import webbrowser
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 
-file = open("BigDaddyFile.txt", "wb")
+file = open("BigFile.txt", "wb")
 GB= 1024*1024*1024
 progress = 0
 
@@ -19,8 +18,14 @@ def writeFile(lol):
     for x in range(lol):
         file.write(os.urandom(GB))
 
+def progressBar(current, total, barLength = 50):
+        percent = float(current) * 100 / total
+        arrow   = '-' * int(percent/100 * barLength - 1) + '>'
+        spaces  = ' ' * (barLength - len(arrow))
+        print(Fore.LIGHTGREEN_EX + 'Progress: [%s%s] %d %%' % (arrow, spaces, percent), end='\r')
+
 os.system("title " + 'Big TXT File Generator by EinsKatze#0546')
-typeAnim(Fore.CYAN + "Wanna Write a BIG ASS FILE? How many Gigabytes should the File have?", 0.05)
+typeAnim(Fore.CYAN + "Wanna Write a Big File? How many Gigabytes should the File have?", 0.05)
 choice = input('Gigabytes > ' + Style.RESET_ALL)
 if int(choice) == 0:
     for i in range(3):
@@ -32,17 +37,10 @@ typeAnim(Fore.YELLOW + "Okay, your file will be written now.", 0.05)
 typeAnim("Please wait for the file to be written. It will take some time due to the big file size.", 0.05)
 print('\n')
 for i in range(int(choice)):
-    t = threading.Thread(target=writeFile, args=(1,))
-    t.start()
-    t.join()
+    writeFile(1)
     progress += 1
-    def progressBar(current, total, barLength = 50):
-        percent = float(current) * 100 / total
-        arrow   = '-' * int(percent/100 * barLength - 1) + '>'
-        spaces  = ' ' * (barLength - len(arrow))
-        print(Fore.LIGHTGREEN_EX + 'Progress: [%s%s] %d %%' % (arrow, spaces, percent), end='\r')
     progressBar(progress, int(choice))
 
-time.sleep(5)
+time.sleep(3)
 os.system('cls')
 file.close()
