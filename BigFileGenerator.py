@@ -1,11 +1,10 @@
 import time
 import os
 import webbrowser
+import threading
 from colorama import Fore, Style
 
-file = open("BigFile.txt", "wb")
 GB= 1024*1024*1024
-progress = 0
 
 def typeAnim(text, speed, newLine = True):
         for i in text:
@@ -14,7 +13,7 @@ def typeAnim(text, speed, newLine = True):
         if newLine:
             print()
 
-def writeFile(lol):
+def writeFile(file, lol):
     for x in range(lol):
         file.write(os.urandom(GB))
 
@@ -24,8 +23,22 @@ def progressBar(current, total, barLength = 50):
         spaces  = ' ' * (barLength - len(arrow))
         print(Fore.LIGHTGREEN_EX + 'Progress: [%s%s] %d %%' % (arrow, spaces, percent), end='\r')
 
+def threadfunc(choice):
+    global file
+    global progress
+    progress = 0
+    file = open("BigFile.txt", "wb")
+    for i in range(int(choice)):
+        writeFile(file, 1)
+        progress += 1
+        progressBar(progress, int(choice))
+    time.sleep(1)
+    os.system('cls')
+    file.close()
+        
+
 os.system("title " + 'Big TXT File Generator by EinsKatze#0546')
-typeAnim(Fore.CYAN + "Wanna Write a Big File? How many Gigabytes should the File have?", 0.05)
+typeAnim(Fore.CYAN + "Wanna generate a Big File? How big should the file be? (in GB)", 0.05)
 choice = input('Gigabytes > ' + Style.RESET_ALL)
 if int(choice) == 0:
     for i in range(3):
@@ -33,14 +46,7 @@ if int(choice) == 0:
         webbrowser.open('https://youtu.be/g8vUPIx5gD8?t=1', new=2, autoraise=True)
         time.sleep(0.5)
     exit(0)
-typeAnim(Fore.YELLOW + "Okay, your file will be written now.", 0.05)
-typeAnim("Please wait for the file to be written. It will take some time due to the big file size.", 0.05)
+x = threading.Thread(target=threadfunc, args=(choice,))
+x.start()
+typeAnim(Fore.YELLOW + "Generating file . . .", 0.025)
 print('\n')
-for i in range(int(choice)):
-    writeFile(1)
-    progress += 1
-    progressBar(progress, int(choice))
-
-time.sleep(3)
-os.system('cls')
-file.close()
