@@ -4,7 +4,7 @@ MiB = 1024 * 1024
 
 
 def writeFile(file, size):
-    file = open(fName, "wb")
+    file = open(file, "wb")
     for n in range(int(size)):
         file.write(os.urandom(MiB))
         progressBar(n, int(size))
@@ -19,9 +19,9 @@ def progressBar(current, total, barlen=50):
 
 
 def main():
-    print("Please enter the file name.", 0.05)
+    print("Please enter the file name.")
     fName = input('Filename > ')
-    print("Please enter the file size.", 0.05)
+    print("Please enter the file size.")
     choice = input('Mibibytes > ')
     if int(choice) <= 0:
         print("Invalid. Try again.")
